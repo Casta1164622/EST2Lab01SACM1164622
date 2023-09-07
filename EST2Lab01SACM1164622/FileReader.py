@@ -1,12 +1,9 @@
-import json
+import csv
 
 def readCSVFile():
-    data = [] 
-    myFile = open(r'C:\Users\CASTA\Downloads\input.csv')
-    text = myFile.readline()
-    while text != "":
-        data.append(text)
-        text = myFile.readline()
-        
-    myFile.close()
-    return data
+    result = [] 
+    with open(r'C:\Users\CASTA\Downloads\input.csv') as csvfile:
+        csvReader = csv.reader(csvfile, delimiter=';')
+        for row in csvReader:
+            result.append(row)
+    return result
