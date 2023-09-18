@@ -16,11 +16,8 @@ for instruccion in data:
     if instruccion[0] == "DELETE":
         LT.delete(bt.Node(int(person['dpi']),person))
     if instruccion[0] == "PATCH":
-        nodoFound = LT.searchDPI(bt.Node(int(person['dpi']),person))
-        if nodoFound != None:
-            for item in nodoFound.data:
-                if person.get(item):
-                    nodoFound.data[item] = person.get(item)
+
+        LT.patch(bt.Node(int(person['dpi']),person),person)
 
 menu_options = {
     1: 'Buscar Por Nombre',
@@ -29,7 +26,7 @@ menu_options = {
     4: 'Salir',
 }
 def print_menu():
-    os.system('cls')
+    #os.system('cls')
     for key in menu_options.keys():
         print (key, '--', menu_options[key] )
 

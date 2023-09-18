@@ -114,7 +114,7 @@ class Node:
                     parentN.left = None
                 elif(parentN.right == subNode):
                     parentN.right = None
-         
+
    def buscarNombres(self, nombre):
        res = []
        if not self:
@@ -131,7 +131,10 @@ class Node:
            curr_node = curr_node.right
        return res
 
-
-
-
-
+   def patch(root,search,new):
+       FoundNode = Node.searchDPI(root,search)
+       if FoundNode != None:
+    
+           for item in FoundNode.data:
+               if new.get(item):
+                   FoundNode.data[item] = new.get(item)
