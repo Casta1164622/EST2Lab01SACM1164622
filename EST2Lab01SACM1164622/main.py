@@ -1,37 +1,26 @@
-import FileReader as fReader
-import bplustree as bpt
+import binaryTree as bt
+import FileReader as fr
 import json
 import os
 
-data = fReader.readCSVFile()
+data = fr.readCSVFile()
 
-dataTree = bpt.BPlusTree()
+LT = bt.Node(10000,{'name':'0','dpi':'10000'})
 
 print("Cargando...")
-for instruction in data:
-    person = json.loads(instruction[1])
-    personDpi = {key: val for key,
-                  val in person.items() if key == 'dpi'}
-    personName = {key: val for key,
-                  val in person.items() if key == 'name'}
-    if instruction[0] == "INSERT":
-        dataTree.insert((personDpi,personName),person)
-    if instruction[0] == "DELETE":
-        dataTree.delete((personDpi,personName))
-    if instruction[0] == "PATCH":
-        dataTree.change((personDpi,personName),person)
+for instruccion in data:
 
-searchambos = dataTree.query((personDpi,personName))
-print(searchambos)
-print("------------------------")
-
-searchdpi = dataTree.searhDPI((personDpi,personName))
-print(searchdpi)
-print("------------------------")
-personDpi['dpi'] = ""
-searchNombre = dataTree.searchNombre((personDpi,personName))
-print(searchNombre)
-print("------------------------")
+    person = json.loads(instruccion[1])
+    if instruccion[0] == "INSERT":
+        LT.insert(int(person['dpi']),person)
+    if instruccion[0] == "DELETE":
+        LT.delete(bt.Node(int(person['dpi']),person))
+    if instruccion[0] == "PATCH":
+        nodoFound = LT.searchDPI(bt.Node(int(person['dpi']),person))
+        if nodoFound != None:
+            for item in nodoFound.data:
+                if person.get(item):
+                    nodoFound.data[item] = person.get(item)
 
 menu_options = {
     1: 'Buscar Por Nombre',
@@ -50,7 +39,7 @@ def option1():
      print("------------------------")
      print('Ingrese el nombre a buscar')
      nombresearch = input()
-     searchNombre = dataTree.searchNombre(({'dpi':'0'},{'name':nombresearch.lower()}))
+     searchNombre = bt.Node.buscarNombres(LT,nombresearch.lower())
      if len(searchNombre)>0:
          print('Resultados:')
          for item in searchNombre:
@@ -65,10 +54,10 @@ def option2():
      print("------------------------")
      print('Ingrese el DPI a buscar')
      dpisearch = input()
-     searchDPI = dataTree.searhDPI(({'dpi':dpisearch},{'name':''}))
+     searchDPI = bt.Node.searchDPI(LT,bt.Node(dpisearch,{'dpi':int(dpisearch)}))
      if searchDPI != None:
          print('Resultados:')
-         print(searchDPI)
+         print(searchDPI.data)
      else:
          print('No se encontraron resultados con el dpi: ',dpisearch)
      input("Presione enter para regresar al menu principal ")
@@ -81,7 +70,7 @@ def option3():
      nombresearch = input()
      print('Ingrese el DPI a buscar')
      dpisearching = input()
-     searchboth = dataTree.query(({'dpi':dpisearching},{'name':nombresearch.lower()}))
+     searchboth = bt.Node.searchDPI(LT,bt.Node({'dpi':int(dpisearching)}))
      if searchboth != None:
          print('Resultados:')
          print(searchboth)
@@ -108,10 +97,3 @@ while(True):
         exit()
     else:
         print('Opcion no valida, ingresa otra...')
-
-
-            
-
-
-
-
