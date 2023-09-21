@@ -27,14 +27,14 @@ class Node:
 
    def searchDPI(root, search):
     currentNode = root 
-    while(currentNode.key != search.key):
-        if(int(search.key) == int(currentNode.key)):
+    while(currentNode.key != search):
+        if(int(search) == int(currentNode.key)):
             return currentNode
-        elif(int(search.key) > int(currentNode.key)):
+        elif(int(search) > int(currentNode.key)):
             currentNode = currentNode.right
             if currentNode == None:
                 return None
-        elif(int(search.key) < int(currentNode.key)):
+        elif(int(search) < int(currentNode.key)):
             currentNode = currentNode.left
             if currentNode == None:
                 return None
@@ -126,7 +126,7 @@ class Node:
                stack.append(curr_node)
                curr_node = curr_node.left
            curr_node = stack.pop()
-           if curr_node.data['name'] == nombre:
+           if curr_node.data.getNombre() == nombre:
                res.append(curr_node.data)
            curr_node = curr_node.right
        return res

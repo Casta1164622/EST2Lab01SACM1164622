@@ -1,23 +1,36 @@
 import binaryTree as bt
 import FileReader as fr
+import person as p
 import json
 import os
 
 data = fr.readCSVFile()
 
-LT = bt.Node(10000,{'name':'0','dpi':'10000'})
+LT = bt.Node(10000,p.Person('a','10000','a','a'))
 
 print("Cargando...")
 for instruccion in data:
 
-    person = json.loads(instruccion[1])
-    if instruccion[0] == "INSERT":
-        LT.insert(int(person['dpi']),person)
-    if instruccion[0] == "DELETE":
-        LT.delete(bt.Node(int(person['dpi']),person))
-    if instruccion[0] == "PATCH":
+    preading = json.loads(instruccion[1])
+    person = p.Person(preading['name'],preading['dpi'],preading['datebirth'],preading['address'])
 
-        LT.patch(bt.Node(int(person['dpi']),person),person)
+    if instruccion[0] == "INSERT":
+        bt.Node.insert(LT,int(person.getDpi()),person)
+    if instruccion[0] == "DELETE":
+        bt.Node.delete(LT,int(person.getDpi()))
+    if instruccion[0] == "PATCH":
+        nodoFound = bt.Node.searchDPI(LT,int(person.getDpi()))
+
+        if nodoFound != None:
+            newPerson = nodoFound.data
+            if person.getDpi() != None:
+                newPerson.setDpi(person.getDpi())
+            if person.getNombre() != None:
+                newPerson.setNombre(person.getNombre())
+            if person.getFechaNacimiento() != None:
+                newPerson.setFechaNacimiento(person.getFechaNacimiento())
+            if person.getDireccion() != None:
+                newPerson.setDireccion(person.getDireccion())
 
 menu_options = {
     1: 'Buscar Por Nombre',
